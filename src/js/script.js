@@ -46,19 +46,21 @@ window.addEventListener("DOMContentLoaded", () => {
 
 
 
-    const modalBtn = document.querySelector("button.btn.btn_white"),
+    const modalBtn = document.querySelectorAll('[data-btn="modal"]'),
           modalBlock = document.querySelector(".modal"),
           modalClose = document.querySelector(".modal__close");
 
-    modalBtn.addEventListener("click", () => {
 
-        modalBlock.style.display = "block";
+    modalBtn.forEach(item => {
+        item.addEventListener("click", () => {
+            modalBlock.style.display = "block";
+        });
     });
 
     modalClose.addEventListener("click", () => {
         modalBlock.style.display = "none";
 
     });
-    
-    console.log(typeof(Infinity));
+
+
 });
