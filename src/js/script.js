@@ -12,10 +12,8 @@ window.addEventListener("DOMContentLoaded", () => {
           block_IMG     = document.querySelectorAll(".offer__slide"),
           slidePrev     = document.querySelector(".offer__slider-prev"),
           slideNext     = document.querySelector(".offer__slider-next"),
-          currentNumb   = document.querySelector("#current"),
-          totalNumb     = document.querySelector("#total");
+          currentNumb   = document.querySelector("#current");
     let mainI = 0;
-
 
 // functions 
     function showModalWindow() { // Табы
@@ -96,9 +94,11 @@ window.addEventListener("DOMContentLoaded", () => {
             mainI++;
             hideIMG();
             showIMG(mainI);
+            currentNumb.textContent = `0${mainI+1}`;
         }
 
         return mainI;
+
     });
 
     slidePrev.addEventListener("click", (event) => { // Слайдер
@@ -114,7 +114,11 @@ window.addEventListener("DOMContentLoaded", () => {
             showIMG(mainI);
         }
 
-        return mainI;
+    });
+
+    slidePrev.addEventListener("click", () => {
+        console.log(mainI+1);
+        currentNumb.textContent = `0${mainI+1}`;
     });
 
 });
