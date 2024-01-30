@@ -67,11 +67,17 @@ window.addEventListener("DOMContentLoaded", () => {
     modalBtn.forEach((btn) => { // Модальное окно
         btn.addEventListener("click", () => {
             showModalWindow();
+            document.body.style.overflow = "hidden";
         });
+    });
+
+    modalWindow.addEventListener("click", (e) => { // Модальное окно
+        if (e.target === modalWindow) closeModalWindow();
     });
 
     modalCloseBtn.addEventListener("click", () => { // Модальное окно
         closeModalWindow();
+        document.body.style.overflow = "";
     });
 
     tabWrapper.addEventListener("click", (event) => { // Табы
@@ -121,4 +127,78 @@ window.addEventListener("DOMContentLoaded", () => {
         currentNumb.textContent = `0${mainI+1}`;
     });
 
+
+
+
+    const deadline = "2024-02-01";
+
+    function getTimeRemaining(endtime) {
+        let days, hours, minutes, seconds;
+        const t = Date.parse(endtime) - Date.parse(new Date());
+        const timeBlock = document.querySelector('.timer');
+        if (t <= 0) {
+            days = 0;
+            hours = 0;
+            minutes = 0;
+            seconds = 0;
+            const block = document.createElement("div");
+            block.id = "hover-block";
+            block.textContent = "Акция закончилась!"
+            timeBlock.appendChild(block);
+        } else {
+            days = Math.floor(t / (1000 * 60 * 60 * 24)),
+            hours = Math.floor((t / (1000 * 60 * 60) % 24)),
+            minutes = Math.floor((t / 1000 / 60) % 60),
+            seconds = Math.floor((t / 1000) % 60);
+        }
+              
+        
+        return {
+            'total': t,
+            'days': days,
+            'hours': hours,
+            'minutes': minutes,
+            'seconds': seconds
+        }
+    }
+
+    function getZero(num) {
+        if (num >= 0 && num < 10) {
+            return `0${num}`
+        } else {
+            return num
+        }
+    }
+
+    function setClock(selector, endtime) {
+        const timer        = document.querySelector(selector),
+              days         = document.querySelector('#days'),
+              hours        = document.querySelector('#hours'),
+              minutes      = document.querySelector('#minutes'),
+              seconds      = document.querySelector('#seconds'),
+              timeinterval = setInterval(updateClock, 1000);
+
+        updateClock();
+
+        function updateClock() {
+            const t = getTimeRemaining(endtime);
+
+            
+            days.innerHTML = getZero(t.days);
+            hours.innerHTML = getZero(t.hours);
+            minutes.innerHTML = getZero(t.minutes);
+            seconds.innerHTML = getZero(t.seconds);
+            
+
+            if (t.total <= 0) clearInterval(timeinterval);
+        }
+
+    }
+
+    setClock('.timer', deadline);
+
+
+    const date = new Date('2024-01-31');
+    console.log(date);
 });
+
