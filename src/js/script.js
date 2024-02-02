@@ -2,6 +2,16 @@
 
 window.addEventListener("DOMContentLoaded", () => {
 
+    window.addEventListener("scroll", () => {
+
+        if (window.scrollY + document.documentElement.clientHeight >= 3000) {
+            scroll_block.style.display = "block";
+
+        } else {
+            scroll_block.style.display = "none";
+        }
+    });
+
 // variables
     const modalBtn      = document.querySelectorAll('[data-btn="modal"]'),
           modalWindow   = document.querySelector(".modal"),
@@ -13,12 +23,15 @@ window.addEventListener("DOMContentLoaded", () => {
           slidePrev     = document.querySelector(".offer__slider-prev"),
           slideNext     = document.querySelector(".offer__slider-next"),
           currentNumb   = document.querySelector("#current"),
-          drop_modal    = document.querySelector("[data-drop]");
+          drop_modal    = document.querySelector("[data-drop]"),
+          scroll_block = document.querySelector(".scrollTop"),
+          scrollBtn = document.querySelector(".scrollTop__block");
     let mainI = 0;
 
 // functions 
     function showModalWindow() { // Табы
         modalWindow.style.display = "block";
+        clearTimeout(timeoutModal);
     }
 
     function closeModalWindow() { // Табы
@@ -133,10 +146,13 @@ window.addEventListener("DOMContentLoaded", () => {
         currentNumb.textContent = `0${mainI+1}`;
     });
 
+    scrollBtn.addEventListener("click", () => {
+        window.scrollTo(0,0);
+        // console.log("vnnv");
+    });
 
 
-
-    const deadline = "2024-02-01";
+    const deadline = "2024-05-20";
 
     function getTimeRemaining(endtime) {
         let days, hours, minutes, seconds;
@@ -202,5 +218,7 @@ window.addEventListener("DOMContentLoaded", () => {
     }
 
     setClock('.timer', deadline);
+
+    const timeoutModal = setTimeout(showModalWindow, 5000);
 });
 

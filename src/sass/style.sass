@@ -6,6 +6,8 @@
 a
   text-decoration: none
 
+html
+  scroll-behavior: smooth
 
 @import "block/media"
 
@@ -627,3 +629,14 @@ a
   font-weight: 700
   color: #fff
   padding-top: 70px
+
+.scrollTop
+  display: none
+  position: relative
+  .scrollTop__block
+    position: fixed
+    bottom: 30px
+    right: 30px
+    width: 70px
+    cursor: pointer
+    transition: all 1s    
