@@ -12,7 +12,8 @@ window.addEventListener("DOMContentLoaded", () => {
           block_IMG     = document.querySelectorAll(".offer__slide"),
           slidePrev     = document.querySelector(".offer__slider-prev"),
           slideNext     = document.querySelector(".offer__slider-next"),
-          currentNumb   = document.querySelector("#current");
+          currentNumb   = document.querySelector("#current"),
+          drop_modal    = document.querySelector("[data-drop]");
     let mainI = 0;
 
 // functions 
@@ -69,6 +70,11 @@ window.addEventListener("DOMContentLoaded", () => {
             showModalWindow();
             document.body.style.overflow = "hidden";
         });
+    });
+
+    drop_modal.addEventListener("click", () => {
+        showModalWindow();
+        document.body.style.overflow = "hidden";
     });
 
     modalWindow.addEventListener("click", (e) => { // Модальное окно
@@ -196,9 +202,5 @@ window.addEventListener("DOMContentLoaded", () => {
     }
 
     setClock('.timer', deadline);
-
-
-    const date = new Date('2024-01-31');
-    console.log(date);
 });
 
