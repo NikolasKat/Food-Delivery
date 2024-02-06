@@ -220,5 +220,118 @@ window.addEventListener("DOMContentLoaded", () => {
     setClock('.timer', deadline);
 
     const timeoutModal = setTimeout(showModalWindow, 5000);
+
+
+
+    class CreateMenuCards {
+        constructor(title, subtitle, price, img, alt, parentElement) {
+            this.title = title;
+            this.subtitle = subtitle;
+            this.img = img;
+            this.price = price;
+            this.alt = alt;
+            this.parent = document.querySelector(parentElement);
+            this.exchangeRate = 38;
+            this.convertToUAH();
+        }
+
+        convertToUAH() { // Доп. функционал
+            this.price = +this.price * this.exchangeRate; // Доп. функционал
+        } // Доп. функционал
+
+        render() {
+            const element = document.createElement("div");
+
+            element.innerHTML = `
+                <div class="menu__item">
+                    <img src="${this.img}" alt="${this.alt}">
+                    <h3 class="menu__item-subtitle">Меню "${this.title}"</h3>
+                    <div class="menu__item-descr">${this.subtitle}</div>
+                    <div class="menu__item-divider"></div>
+                    <div class="menu__item-price">
+                        <div class="menu__item-cost">Цена:</div>
+                        <div class="menu__item-total"><span>${this.price}</span> грн/день</div>
+                    </div>
+                </div>
+            `;
+
+            this.parent.append(element);
+        }
+    }
+
+    new CreateMenuCards(
+        "Фитнес", 
+        "Меню \"Фитнес\" - это новый подход к приготовлению блюд: больше свежих овощей и фруктов. Продукт активных и здоровых людей. Это абсолютно новый продукт с оптимальной ценой и высоким качеством!", 
+        10, 
+        "img/tabs/vegy.jpg", 
+        "vegy", 
+        ".menu .container"
+    ).render();
+    new CreateMenuCards(
+        "Премиум", 
+        "В меню “Премиум” мы используем не только красивый дизайн упаковки, но и качественное исполнение блюд. Красная рыба, морепродукты, фрукты - ресторанное меню без похода в ресторан!", 
+        50, 
+        "img/tabs/elite.jpg", 
+        "elite", 
+        ".menu .container"
+    ).render();
+    new CreateMenuCards(
+        "Постное", 
+        "Меню “Постное” - это тщательный подбор ингредиентов: полное отсутствие продуктов животного происхождения, молоко из миндаля, овса, кокоса или гречки, правильное количество белков за счет тофу и импортных вегетарианских стейков.", 
+        20, 
+        "img/tabs/post.jpg", 
+        "post", 
+        ".menu .container"
+    ).render();
+    new CreateMenuCards(
+        "Постное", 
+        "Меню “Постное” - это тщательный подбор ингредиентов: полное отсутствие продуктов животного происхождения, молоко из миндаля, овса, кокоса или гречки, правильное количество белков за счет тофу и импортных вегетарианских стейков.", 
+        20, 
+        "img/tabs/post.jpg", 
+        "post", 
+        ".menu .container"
+    ).render();
+    // new CreateMenuCards();
+    // new CreateMenuCards();
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // // For modal
+    // const inpBtn = document.querySelector(".btn_min"),
+    //       inputs = document.querySelectorAll(".modal__input");
+    // let array = [];
+    
+    // function Buyer(name, number) {
+    //     this.name = name;
+    //     this.phoneNumber = number;
+    // }
+
+    // function getInputValue(item) {
+    //     let value;
+
+    //     if (item && item.classList.contains("modal__input")) {
+    //         inputs.forEach((item1, i) => {
+    //             if (item == item1) {
+    //                 value = item.value;
+    //             }
+    //         });
+    //     }
+    //     console.log(value);
+    //     return value;
+    // }
+
+    // inputs.forEach(item => {
+    //     item.addEventListener("change", (e) => {
+    //         const newBuyer = new Buyer(getInputValue(item));
+
+    //         array.push(newBuyer);
+
+    //         console.log(array);
+    //     });
+    // });
+    // const kolya = new Buyer("Kolya", "09912345");
+    // array.push(kolya);
+    // console.log(array);
 });
+
 
