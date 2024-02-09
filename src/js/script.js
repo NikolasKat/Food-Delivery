@@ -224,7 +224,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
 
     class CreateMenuCards {
-        constructor(title, subtitle, price, img, alt, parentElement) {
+        constructor(title, subtitle, price, img, alt, parentElement, ...restClasses) {
             this.title = title;
             this.subtitle = subtitle;
             this.img = img;
@@ -232,6 +232,7 @@ window.addEventListener("DOMContentLoaded", () => {
             this.alt = alt;
             this.parent = document.querySelector(parentElement);
             this.exchangeRate = 38;
+            this.classes = restClasses;
             this.convertToUAH();
         }
 
@@ -242,16 +243,23 @@ window.addEventListener("DOMContentLoaded", () => {
         render() {
             const element = document.createElement("div");
 
+            if (this.classes.length === 0) {
+                this.classes = "menu__item";
+                element.classList.add(this.classes);
+            } else {
+                this.classes.forEach(classNanes => element.classList.add(classNanes));
+
+                element.classList.add("menu__item");
+            }
+
             element.innerHTML = `
-                <div class="menu__item">
-                    <img src="${this.img}" alt="${this.alt}">
-                    <h3 class="menu__item-subtitle">Меню "${this.title}"</h3>
-                    <div class="menu__item-descr">${this.subtitle}</div>
-                    <div class="menu__item-divider"></div>
-                    <div class="menu__item-price">
-                        <div class="menu__item-cost">Цена:</div>
-                        <div class="menu__item-total"><span>${this.price}</span> грн/день</div>
-                    </div>
+                <img src="${this.img}" alt="${this.alt}">
+                <h3 class="menu__item-subtitle">Меню "${this.title}"</h3>
+                <div class="menu__item-descr">${this.subtitle}</div>
+                <div class="menu__item-divider"></div>
+                <div class="menu__item-price">
+                    <div class="menu__item-cost">Цена:</div>
+                    <div class="menu__item-total"><span>${this.price}</span> грн/день</div>
                 </div>
             `;
 
@@ -265,7 +273,8 @@ window.addEventListener("DOMContentLoaded", () => {
         10, 
         "img/tabs/vegy.jpg", 
         "vegy", 
-        ".menu .container"
+        ".menu .container",
+        "big"
     ).render();
     new CreateMenuCards(
         "Премиум", 
@@ -281,7 +290,9 @@ window.addEventListener("DOMContentLoaded", () => {
         20, 
         "img/tabs/post.jpg", 
         "post", 
-        ".menu .container"
+        ".menu .container",
+        "big",
+        "red"
     ).render();
     new CreateMenuCards(
         "Постное", 
@@ -291,9 +302,8 @@ window.addEventListener("DOMContentLoaded", () => {
         "post", 
         ".menu .container"
     ).render();
-    // new CreateMenuCards();
-    // new CreateMenuCards();
 
+    
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // // For modal
