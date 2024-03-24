@@ -19,16 +19,111 @@ window.addEventListener("DOMContentLoaded", () => {
           tabContent    = document.querySelectorAll(".tabcontent"),
           tabWrapper    = document.querySelector(".tabheader__items"),
           tabs          = document.querySelectorAll(".tabheader__item"),
+          sliderWrap    = document.querySelector(".offer__slider-wrapper"),
+          sliderField   = document.querySelector(".offer__slider-inner"),
           block_IMG     = document.querySelectorAll(".offer__slide"),
           slidePrev     = document.querySelector(".offer__slider-prev"),
           slideNext     = document.querySelector(".offer__slider-next"),
+          slider = document.querySelector(".offer__slider"),
           currentNumb   = document.querySelector("#current"),
           drop_modal    = document.querySelector("[data-drop]"),
-          scroll_block = document.querySelector(".scrollTop"),
-          scrollBtn = document.querySelector(".scrollTop__block");
-    let mainI = 0;
+          scroll_block  = document.querySelector(".scrollTop"),
+          scrollBtn     = document.querySelector(".scrollTop__block"),
+          width = window.getComputedStyle(sliderWrap).width,
+          arrOfDots = [];
+    let mainI = 0,
+        offset = 0;
+
+    sliderField.style.width = 100 * block_IMG.length + "%";
+    sliderField.style.display = "flex";
+    sliderField.style.transition = "0.5s all";
+
+    sliderWrap.style.overflow = "hidden";
+
+    block_IMG.forEach(slide => {
+        slide.style.width = width;
+    });
+
+    slider.style.position = "relative";
+
+    const indicatorsWrap = document.createElement("ol");
+    indicatorsWrap.style.cssText = `
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        z-index: 15;
+        display: flex;
+        justify-content: center;
+        margin-right: 15%;
+        margin-left: 15%;
+        list-style: none;
+    `;
+    slider.append(indicatorsWrap);
+
+    for (let i = 0; i < block_IMG.length; i++) {
+        const dot = document.createElement("li");
+        dot.setAttribute("data-slide-to", i+1);
+        dot.style.cssText = `
+            box-sizing: content-box;
+            flex: 0 1 auto;
+            width: 30px;
+            height: 6px;
+            margin-right: 3px;
+            margin-left: 3px;
+            cursor: pointer;
+            background-color: #fff;
+            background-clip: padding-box;
+            border-top: 10px solid transparent;
+            border-bottom: 10px solid transparent;
+            opacity: .5;
+            transition: opacity .6s ease;
+        `;
+        indicatorsWrap.append(dot);
+
+        if (i == 0) {
+            dot.style.opacity = 1;
+        }
+
+        arrOfDots.push(dot);
+    }
+    console.log(arrOfDots);
+    slideNext.addEventListener("click", () => {
+        if (offset == +width.slice(0, width.length - 2) * (block_IMG.length - 1)) {
+            offset = 0;
+        } else {
+            offset += +width.slice(0, width.length - 2);
+        }
+
+        sliderField.style.transform = `translateX(-${offset}px)`;
+
+        currentNumb.textContent = `0${mainI+1}`;
+
+
+    });
+
+    slidePrev.addEventListener("click", () => {
+        if (offset == 0) {
+            offset = +width.slice(0, width.length - 2) * (block_IMG.length - 1);
+        } else {
+            offset -= +width.slice(0, width.length - 2);
+        }
+
+        sliderField.style.transform = `translateX(-${offset}px)`;
+    });
+
 
 // functions 
+    function opasityOff() {
+        arrOfDots.forEach(item => {
+            item.style.opacity = .5;
+        });
+    }
+
+    function opacityOn(i = 0) {
+        arrOfDots[i].style.opacity = 1;
+    }
+
     function showModalWindow() { // Табы
         modalWindow.style.display = "block";
         clearTimeout(timeoutModal);
@@ -56,26 +151,10 @@ window.addEventListener("DOMContentLoaded", () => {
         tabs[i].classList.add("tabheader__item_active");
     };
 
-    function hideIMG() { // Слайдер
-        block_IMG.forEach(item => {
-            item.style.display = "none";
-        });
-    }
-
-    function showIMG(i) { // Слайдер
-        if (i > 3) {
-            mainI = 0;
-            block_IMG[0].style.display = "block";
-        } else {
-            block_IMG[i].style.display = "block";
-        }
-    }
-
     hideAllContentForTabs();     // Табы
     showAllContentForTabs();     // Табы
-    hideIMG();                   // Слайдер
-    showIMG(mainI);              // Слайдер
-
+    opasityOff();
+    opacityOn(mainI);
 
 // EventListeners
     modalBtn.forEach((btn) => { // Модальное окно
@@ -115,11 +194,16 @@ window.addEventListener("DOMContentLoaded", () => {
     slideNext.addEventListener("click", (event) => { // Слайдер
         const target = event.target;
 
-        if (target) {
+        if (target && mainI < 3) {
             mainI++;
-            hideIMG();
-            showIMG(mainI);
             currentNumb.textContent = `0${mainI+1}`;
+            opasityOff();
+            opacityOn(mainI);
+        } else {
+            mainI = 0;
+            currentNumb.textContent = `0${mainI+1}`;
+            opasityOff();
+            opacityOn(mainI);
         }
 
         return mainI;
@@ -131,24 +215,19 @@ window.addEventListener("DOMContentLoaded", () => {
 
         if (target && mainI > 0) {
             mainI--;
-            hideIMG();
-            showIMG(mainI);
+            currentNumb.textContent = `0${mainI+1}`;
+            opasityOff();
+            opacityOn(mainI);
         } else {
             mainI = 3;
-            hideIMG();
-            showIMG(mainI);
+            currentNumb.textContent = `0${mainI+1}`;
+            opasityOff();
+            opacityOn(mainI);
         }
-
-    });
-
-    slidePrev.addEventListener("click", () => {
-        console.log(mainI+1);
-        currentNumb.textContent = `0${mainI+1}`;
     });
 
     scrollBtn.addEventListener("click", () => {
         window.scrollTo(0,0);
-        // console.log("vnnv");
     });
 
 
@@ -276,6 +355,7 @@ window.addEventListener("DOMContentLoaded", () => {
         ".menu .container",
         "big"
     ).render();
+
     new CreateMenuCards(
         "Премиум", 
         "В меню “Премиум” мы используем не только красивый дизайн упаковки, но и качественное исполнение блюд. Красная рыба, морепродукты, фрукты - ресторанное меню без похода в ресторан!", 
@@ -284,6 +364,7 @@ window.addEventListener("DOMContentLoaded", () => {
         "elite", 
         ".menu .container"
     ).render();
+
     new CreateMenuCards(
         "Постное", 
         "Меню “Постное” - это тщательный подбор ингредиентов: полное отсутствие продуктов животного происхождения, молоко из миндаля, овса, кокоса или гречки, правильное количество белков за счет тофу и импортных вегетарианских стейков.", 
@@ -294,54 +375,4 @@ window.addEventListener("DOMContentLoaded", () => {
         "big",
         "red"
     ).render();
-    new CreateMenuCards(
-        "Постное", 
-        "Меню “Постное” - это тщательный подбор ингредиентов: полное отсутствие продуктов животного происхождения, молоко из миндаля, овса, кокоса или гречки, правильное количество белков за счет тофу и импортных вегетарианских стейков.", 
-        20, 
-        "img/tabs/post.jpg", 
-        "post", 
-        ".menu .container"
-    ).render();
-
-    
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    // // For modal
-    // const inpBtn = document.querySelector(".btn_min"),
-    //       inputs = document.querySelectorAll(".modal__input");
-    // let array = [];
-    
-    // function Buyer(name, number) {
-    //     this.name = name;
-    //     this.phoneNumber = number;
-    // }
-
-    // function getInputValue(item) {
-    //     let value;
-
-    //     if (item && item.classList.contains("modal__input")) {
-    //         inputs.forEach((item1, i) => {
-    //             if (item == item1) {
-    //                 value = item.value;
-    //             }
-    //         });
-    //     }
-    //     console.log(value);
-    //     return value;
-    // }
-
-    // inputs.forEach(item => {
-    //     item.addEventListener("change", (e) => {
-    //         const newBuyer = new Buyer(getInputValue(item));
-
-    //         array.push(newBuyer);
-
-    //         console.log(array);
-    //     });
-    // });
-    // const kolya = new Buyer("Kolya", "09912345");
-    // array.push(kolya);
-    // console.log(array);
 });
-
-
